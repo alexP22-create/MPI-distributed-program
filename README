@@ -1,0 +1,46 @@
+Postolache Alexandru-Gabriel 331CB
+
+					Tema3 APD
+
+Functii:
+	1) print_final_vector()
+		- printeaza vectorul final 
+	2) print_complete_topology()
+		- metoda care printeaza toata tipologia.
+		- pentru ca nu se stie care coordonator e 0, 1 sau 2 se folosesc
+		cate 3 if-uri
+		- la stringul final de printat se concateneaza nodurile in ordine
+	3) main()
+		- mai intai creez un comunicator numai cu coordonatorii 0, 1 si 2
+pentru a folosi o bariera mai tarziu
+		- dupa fiecare coordonator isi citeste workerii respectivi
+		- dupa coordonatorii isi trimit informatii unul altuia legate de workerii
+lor. la finalul trimiterii isi printeaza topologia, doar coordonatorii.
+		- dupa am pus o bariera ca sa fiu sigur ca toti coordonatorii au toata
+informatia completa inainte de a o trimite nodurilor lor
+		- se informeaza nodurile si se printeaza topologia
+		- incepe etapa 2 cu dublarea vectorului
+		- cluster-ul 0 citeste n si creeaza vectorul pe care il trimite impreuna cu n
+la celelalte 2 clustere
+		- dupa fiecare cluster trimit vectorul al workerii lor
+		- in workeri dupa ce se primesc n si v se vor dubla doar elementele din v
+care corespund worker-ului respectiv
+		- acele elemente se determina in fct de index-ul workerului si de cati workeri
+e nevoie ca sa se calculeze toate elementele lui v
+	De exemplu pt 0 1 2 3 4 5 ... 11 cu workerii 3 6 (ai lui 1), 4 7 8(ai lui 1) si 5 (al lui 2)
+workerii 3 si 6 vor dubla 0, respectiv 1 dar si 6 si 7 deoarece mai e nevoie de inca un set de workeri
+pt a acoperi toate elementele.
+		- dupa aceea trimit tot vectorul v inapoi la cluster-ul(coordonatorul) fiecaruia
+		- coordonatorul, pentru fiecare vector v primit, face un "merge" cu vectorul v initial
+		- prin "merge" ma refer ca pastreaza elementele schimbate de worker
+		- coordonatorii 1 si 2 ii trimit lui 0 vectorii lor, iar 0 dupa ce face ultimele 2 merge-uri
+printeaza tot noul vector.
+
+	Bonus: La bonus(cand error = 1) am copiat codul de dinainte si doar am modificat modul de trimitere
+al informatiilor.
+	Adica la stabilirea topologiei 0 ii trimite lui 2 inf despre 0. 2 ii trimite lui 1 atat inf despre sine(2),
+cat si despre 0. Dupa ce 1 primeste ambele inf ii trimite lui 2 inf sale, iar la final 2 ii trimite lui 0 atat inf despre
+2 cat si despre 1.
+	Iar la calcularea vectorului, 0 trimite n si vectorul lui 2 care le trimite mai departe la 1. Dupa e la fel ca la
+algoritmul normal. La trimiterea calculelor efectuate 1 ii trimite lui 2 vectorul care face "merge" si 2 ii trimite mai
+departe lui 0.
